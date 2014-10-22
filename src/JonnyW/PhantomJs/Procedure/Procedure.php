@@ -104,8 +104,12 @@ class Procedure implements ProcedureInterface
                 throw new ProcedureFailedException('proc_open() did not return a resource');
             }
 
-            $result = stream_get_contents($pipes[1]);
-            $log    = stream_get_contents($pipes[2]);
+            $result = stream_get_contents($pipes[2]);
+
+            //Get the log after we get the response, and do it non-blocking.
+            //For some reason, stream_get_contents kept blocking indefinitely on this, even with a timeout set.
+            stream_set_blocking($pipes[1], 0);
+            $log = stream_get_contents($pipes[1]);
 
             fclose($pipes[0]);
             fclose($pipes[1]);

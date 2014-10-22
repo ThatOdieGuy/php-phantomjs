@@ -13,8 +13,8 @@ phantom.onError = function(msg, trace) {
         });
     }
     
-    console.log(JSON.stringify(response, undefined, 4));
-    system.stderr.write(stack.join('\n') + '\n');
+    system.stderr.write(JSON.stringify(response, undefined, 4));
+    console.log(stack.join('\n') + '\n');
     phantom.exit(1);
 };
 

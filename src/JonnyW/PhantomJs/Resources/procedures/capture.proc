@@ -104,8 +104,7 @@ phantom.onError = function(msg, trace) {
     response.content = msg;
     response.console = stack;
 
-    console.log(JSON.stringify(response, undefined, 4));
-    phantom.exit(1);
+    procedure.exit();
 };
 
 /**
@@ -155,11 +154,17 @@ procedure.execute = function (status) {
     }
     
     response.console = logs;
-    
-    system.stderr.write(debug.join('\n') + '\n');
-    console.log(JSON.stringify(response, undefined, 4));
-    
+    procedure.exit();
+
     phantom.exit();
+};
+
+procedure.exit = function() {
+    system.stderr.write(JSON.stringify(response, undefined, 4));
+
+    console.log(debug.join('\n'));
+
+    phantom.exit(1);
 };
 
 {% endautoescape %}
