@@ -104,11 +104,8 @@ class Procedure implements ProcedureInterface
                 throw new ProcedureFailedException('proc_open() did not return a resource');
             }
 
+            //This needs to happen in this order. stderr first, then stdin or else it sometimes hangs.
             $result = stream_get_contents($pipes[2]);
-
-            //Get the log after we get the response, and do it non-blocking.
-            //For some reason, stream_get_contents kept blocking indefinitely on this, even with a timeout set.
-            stream_set_blocking($pipes[1], 0);
             $log = stream_get_contents($pipes[1]);
 
             fclose($pipes[0]);
